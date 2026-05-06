@@ -1,54 +1,37 @@
 # Ratish Gupta
 
-**Computer Engineering @ McMaster University**  
-Digital IC Design · RTL Verification · ML Hardware Acceleration
+Computer Engineering student at McMaster University. Interested in digital IC design, RTL verification, and hardware for ML workloads.
 
-I design and verify digital hardware — RTL to silicon timing closure. My focus is on compute architectures for ML workloads: systolic arrays, dataflow optimization, and FPGA prototyping. I'm targeting roles in Digital IC Design, RTL Verification, and ASIC/FPGA engineering.
+I'm looking for internships and new grad roles in digital design and verification. Most of my projects right now are FPGA prototyping and SystemVerilog work, with a focus on getting the verification flow right rather than just writing RTL that compiles.
 
----
+## Projects
 
-## Featured Projects
-
-### [INT8 Systolic MAC Array for Transformer Acceleration](https://github.com/ratshgupta-guptar76/int8-systolic-mac-array)
+### [INT8 Systolic MAC Array](https://github.com/ratshgupta-guptar76/int8-systolic-mac-array)
 `SystemVerilog` `cocotb` `Verilator` `Vivado`
 
-Parameterized output-stationary INT8 systolic MAC array targeting Q/K/V/O projections in transformer attention. Designed to address the memory bandwidth bottleneck in CPU-based matmul for LLM inference.
+Parameterized output stationary INT8 systolic MAC array, sized for the Q/K/V/O projections in transformer attention. The array uses signed INT8 inputs accumulating into INT32, with a counter based skew unit feeding an N by N PE mesh.
 
-- **Verified:** 10,000 random INT8 matmuls at 4×4 and 8×8 against NumPy golden model via cocotb + Verilator — zero failures, zero RTL changes between parameter sweeps
-- **Synthesized:** Nexys A7-100T (`xc7a100tcsg324-1`) — 64 DSP48E1 units, timing closed at 100 MHz target with **160 MHz Fmax** (WNS = +3.76 ns)
-- **Interfaces:** AXI-S style serial wrapper with 6-state FSM (IDLE → LOAD_A → LOAD_B → DELAY → COMPUTE → OUTPUT)
-- Milestone 1 of 7 in a Compute-In-Memory transformer accelerator project
+What I actually verified and measured:
 
----
+* 10,000 random matmul tests pass at both 4x4 and 8x8 against a NumPy reference, run through cocotb on Verilator. Same RTL, only parameters change between the two configurations.
+* Synthesized for the Nexys A7-100T (`xc7a100tcsg324-1`). The 8x8 array uses 64 DSP48E1 blocks and closes timing at the 100 MHz target with about 3.76 ns of positive slack, which works out to roughly 160 MHz Fmax.
+* Wrote a 6 state FSM wrapper around the bare array so it has a serial AXI Stream style interface instead of the unrealistic 3,000+ port parallel load. Not fully AXI-S compliant (no TLAST), but the protocol pattern is there.
 
-### [Traffic Light FSM Controller](https://github.com/ratshgupta-guptar76/traffic-light-controller)
+### [Traffic Light Controller](https://github.com/ratshgupta-guptar76/traffic-light-controller)
 `Verilog` `QuestaSim`
 
-FSM-based traffic light controller for a 2-way intersection, implemented on FPGA. Covers state encoding, timing logic, and simulation with directed testbenches in QuestaSim.
+FSM based controller for a 2-way intersection, written in Verilog and simulated in QuestaSim. Simulation only, no board bring up. Smaller learning project from earlier on.
 
----
+## Tools and Languages
 
-## Skills
-
-| Domain | Tools & Languages |
+| Area | What I use |
 |---|---|
-| RTL Design | SystemVerilog, Verilog |
-| Verification | cocotb, Verilator, QuestaSim, directed & random testbenches |
-| Synthesis & P&R | Vivado, Quartus |
-| Scripting & Automation | Python, Tcl, Make |
-| Numerical Verification | NumPy golden models, bit-exact comparison |
-
----
-
-## Currently Working On
-
-- **Milestone 2** of the systolic array project: BRAM-tiled double-buffered input staging for K > array size
-- Building out my [personal portfolio site](https://ratishgupta.com) — source at [`ratish-portfolio`](https://github.com/ratshgupta-guptar76/ratish-portfolio)
-
----
+| RTL | SystemVerilog, Verilog |
+| Verification | cocotb, Verilator, QuestaSim, directed testbenches, NumPy golden models |
+| Synthesis | Vivado, Quartus |
+| Scripting | Python, Tcl, Make |
 
 ## Contact
 
-- **LinkedIn:** [in/ratish-gupta](https://www.linkedin.com/in/ratish-gupta/)
-- **Website:** [ratishgupta.com](https://ratishgupta.com)
-- **Blog:** [ratishg2005.blogspot.com](https://ratishg2005.blogspot.com)
+* LinkedIn: [in/ratish-gupta](https://www.linkedin.com/in/ratish-gupta/)
+* Personal site: [ratishgupta.com](https://ratishgupta.com)
